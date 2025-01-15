@@ -5,7 +5,7 @@ import Customer from "../../../domain/customer/entity/customer";
 import Address from "../../../domain/customer/value-object/address";
 import FindCustomerUseCase from "./find";
 
-describe("Customer repository tests", () => {
+describe("Find customer use case integration tests", () => {
   let sequelize: Sequelize;
 
   beforeEach(async () => {
@@ -29,7 +29,7 @@ describe("Customer repository tests", () => {
     const findCustomerUseCase = new FindCustomerUseCase(customerRepository);
 
     const customer = new Customer("123", "Customer 1");
-    const address = new Address("Rua tal", 110, "10100-111", "Manaus");
+    const address = new Address("Rua Tal", 110, "10100-111", "Manaus");
     customer.setAddress(address);
     
     await customerRepository.create(customer);
@@ -49,9 +49,9 @@ describe("Customer repository tests", () => {
       },
     };
 
-    const result = findCustomerUseCase.execute(input);
+    const result = await findCustomerUseCase.execute(input);
 
-    expect(output).toBe(result);
+    expect(result).toEqual(output);
   })
 
 });
