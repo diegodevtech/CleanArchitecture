@@ -1,3 +1,5 @@
+import CreateCustomerUseCase from "./create";
+
 const input = {
   name: "Diego",
   address: {
@@ -24,7 +26,7 @@ describe("Create customer use case unit tests", () => {
 
     const output = await createCustomerUseCase.execute(input);
 
-    expect(output).toBe({
+    expect(output).toStrictEqual({
       id: expect.any(String),
       name: input.name,
       address: {
@@ -35,5 +37,5 @@ describe("Create customer use case unit tests", () => {
       }
     });
   });
-  
+
 });
