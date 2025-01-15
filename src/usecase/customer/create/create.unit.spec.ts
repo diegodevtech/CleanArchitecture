@@ -38,4 +38,24 @@ describe("Create customer use case unit tests", () => {
     });
   });
 
+  it("should throw error when street is missing", async () => {
+    const customerRepository = MockRepository();
+    const createCustomerUseCase = new CreateCustomerUseCase(customerRepository);
+
+    input.address.street = "";
+
+    await expect(createCustomerUseCase.execute(input)).rejects.toThrow("Street is required.");
+  });
+
+  it("should throw error when name is missing", async () => {
+    const customerRepository = MockRepository();
+    const createCustomerUseCase = new CreateCustomerUseCase(customerRepository);
+
+    input.name = "";
+    input.address.street = "Rua"
+    console.log(input)
+
+    await expect(createCustomerUseCase.execute(input)).rejects.toThrow("Name is required");
+  });
+
 });
