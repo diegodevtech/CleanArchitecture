@@ -19,7 +19,7 @@ export default class CreateProductUseCase {
     return {
       id: uuid(),
       name: input.name,
-      price: input.price,
+      price: product.price,
     }
 
   }
