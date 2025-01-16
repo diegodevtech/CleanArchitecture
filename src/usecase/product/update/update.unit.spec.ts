@@ -1,4 +1,5 @@
 import ProductFactory from "../../../domain/product/factory/product.factory";
+import UpdateProductUseCase from "./update";
 
 const product = ProductFactory.create("a", "Product A", 20);
 
