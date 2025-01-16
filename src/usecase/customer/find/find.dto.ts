@@ -1,5 +1,3 @@
-import Address from "../../../domain/customer/value-object/address";
-
 export interface InputFindCustomerDTO {
   id: string;
 }
