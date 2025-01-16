@@ -6,24 +6,24 @@ import CreateProductUseCase from "./create";
 import ProductModel from "../../../infrastructure/product/db/sequelize/product.model";
 
 describe("Create product use case integration tests", () => {
-  
-    let sequelize: Sequelize;
-  
-    beforeEach(async () => {
-      sequelize = new Sequelize({
-        dialect: "sqlite",
-        storage: ":memory:",
-        logging: false,
-        sync: { force: true },
-      });
-  
-      sequelize.addModels([ProductModel]);
-      await sequelize.sync();
+
+  let sequelize: Sequelize;
+
+  beforeEach(async () => {
+    sequelize = new Sequelize({
+      dialect: "sqlite",
+      storage: ":memory:",
+      logging: false,
+      sync: { force: true },
     });
 
-    afterEach(async () => {
-      await sequelize.close();
-    });
+    sequelize.addModels([ProductModel]);
+    await sequelize.sync();
+  });
+
+  afterEach(async () => {
+    await sequelize.close();
+  });
 
   it("should create a product", async () => {
     const productRepository = new ProductRepository();
@@ -31,10 +31,10 @@ describe("Create product use case integration tests", () => {
 
     const productA = ProductFactory.create("a", "Product A", 20);
     const productB = ProductFactory.create("b", "Product B", 20);
-    
+
     await productRepository.create(productA as Product);
     await productRepository.create(productB as Product);
-    
+
     const inputA = {
       type: "a",
       name: "Product A",
@@ -58,7 +58,7 @@ describe("Create product use case integration tests", () => {
       name: "Product B",
       price: 40,
     };
-    
+
     const resultA = await createProductUseCase.execute(inputA);
     const resultB = await createProductUseCase.execute(inputB);
 
