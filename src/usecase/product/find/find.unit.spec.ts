@@ -1,4 +1,5 @@
 import Product from "../../../domain/product/entity/product";
+import FindProductUseCase from "./find";
 
 const product = new Product("123", "Product A", 20);
 
@@ -26,7 +27,7 @@ describe("Find product use case unit tests", () => {
       price: 20
     };
 
-    const result = await findProductUseCase(input);
+    const result = await findProductUseCase.execute(input);
 
     expect(result).toEqual(output);
   })
