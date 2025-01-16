@@ -8,7 +8,7 @@ export default class ProductB implements ProductInterface{
     constructor(id: string, name: string, price: number) {
         this._id = id;
         this._name = name;
-        this._price = price;
+        this._price = price * 2;
 
         this.validate()
     }
@@ -32,7 +32,7 @@ export default class ProductB implements ProductInterface{
     }
 
     get price(): number {
-        return this._price*2
+        return this._price
     }
 
     validate() {
