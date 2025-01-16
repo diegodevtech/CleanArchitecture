@@ -7,42 +7,42 @@ import Product from "../../../domain/product/entity/product";
 describe("Find product use case integration test", () => {
 
   let sequelize: Sequelize;
-  
-    beforeEach(async () => {
-      sequelize = new Sequelize({
-        dialect: "sqlite",
-        storage: ":memory:",
-        logging: false,
-        sync: { force: true },
-      });
-  
-      sequelize.addModels([ProductModel]);
-      await sequelize.sync();
-    });
-    afterEach(async () => {
-      await sequelize.close();
+
+  beforeEach(async () => {
+    sequelize = new Sequelize({
+      dialect: "sqlite",
+      storage: ":memory:",
+      logging: false,
+      sync: { force: true },
     });
 
-    it("should find a product", async () => {
-      const productRepository = new ProductRepository();
-      const findProductUseCase = new FindProductUseCase(productRepository);
+    sequelize.addModels([ProductModel]);
+    await sequelize.sync();
+  });
+  afterEach(async () => {
+    await sequelize.close();
+  });
 
-      const product = new Product("123", "Product A", 20);
-      await productRepository.create(product);
+  it("should find a product", async () => {
+    const productRepository = new ProductRepository();
+    const findProductUseCase = new FindProductUseCase(productRepository);
 
-      const input = {
-        id: "123"
-      };
+    const product = new Product("123", "Product A", 20);
+    await productRepository.create(product);
 
-      const output = {
-        id: "123",
-        name: "Product A",
-        price: 20,
-      };
+    const input = {
+      id: "123"
+    };
 
-      const result = await findProductUseCase.execute(input);
+    const output = {
+      id: "123",
+      name: "Product A",
+      price: 20,
+    };
 
-      expect(result).toEqual(output);
+    const result = await findProductUseCase.execute(input);
 
-    })
+    expect(result).toEqual(output);
+
+  })
 })
