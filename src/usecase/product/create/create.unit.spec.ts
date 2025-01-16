@@ -1,4 +1,7 @@
+import CreateProductUseCase from "./create";
+
 const input = {
+  type: "a",
   name: "Product A",
   price: 20
 }
@@ -24,7 +27,7 @@ describe("Create product use case unit tests", () => {
       name: input.name,
       price: input.price,
     });
-    
+
   });
 
 })
