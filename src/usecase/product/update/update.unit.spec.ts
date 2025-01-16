@@ -27,4 +27,21 @@ describe("Update product use case unit tests", () => {
 
     expect(output).toStrictEqual(input);
   });
-})
+
+  it("should throw error when name is missing", async () => {
+    const productRepository = MockRepository();
+    const updateProductUseCase = new UpdateProductUseCase(productRepository);
+
+    input.name = "";
+    await expect(updateProductUseCase.execute(input)).rejects.toThrow("Name is required")
+  });
+
+  it("should throw error when name is missing", async () => {
+    const productRepository = MockRepository();
+    const updateProductUseCase = new UpdateProductUseCase(productRepository);
+
+    input.name = "Product A edited";
+    input.price = -1;
+    await expect(updateProductUseCase.execute(input)).rejects.toThrow("Price must be greater than zero.")
+  });
+});
