@@ -1,3 +1,7 @@
+import Customer from "../../../domain/customer/entity/customer";
+import Address from "../../../domain/customer/value-object/address";
+import FindCustomerUseCase from "../../../usecase/customer/find/find";
+import CustomerRepository from "../../customer/repository/sequelize/customer.repository";
 import { sequelize, app } from "../express";
 import request from "supertest";
 
@@ -87,35 +91,48 @@ describe("Customer E2E tests", () => {
   });
 
   it("should update a customer", async () => {
-    const createResponse = await request(app)
-      .post("/customer")
-      .send({
-        name: "Diego",
-        address: {
-          street: "Rua",
-          number: 1,
-          zip: "33333-222",
-          city: "Manaus",
-        },
-      });
+    const customerRepository = new CustomerRepository();
+    const findCustomerUseCase = new FindCustomerUseCase(customerRepository);
 
-    expect(createResponse.statusCode).toBe(200);
+    const customer = new Customer("123", "Customer 1");
+    const address = new Address("Rua Tal", 110, "10100-111", "Manaus");
+    customer.setAddress(address);
+
+    await customerRepository.create(customer);
+
+    const input = {
+      id: "123",
+    };
+
+    const output = {
+      id: "123",
+      name: "Customer 1",
+      address: {
+        street: "Rua Tal",
+        number: 110,
+        zip: "10100-111",
+        city: "Manaus",
+      },
+    };
+
+    const result = await findCustomerUseCase.execute(input);
+    expect(result).toEqual(output);
 
     const updateResponse = await request(app)
       .put("/customer")
       .send({
-        id: createResponse.body.id,
+        id: customer.id,
         name: "Diego updated",
         address: {
-          street: "Rua",
-          number: 1,
-          zip: "33333-222",
-          city: "Manaus",
+          street: "Nova rua updated",
+          number: customer.address.number,
+          zip: customer.address.zip,
+          city: customer.address.city,
         },
       });
-
     expect(updateResponse.statusCode).toBe(200);
-    expect(updateResponse.body.name).toBe("Diego updated");
-
+    expect(updateResponse.body.name).toEqual("Diego updated")
+    expect(updateResponse.body.address.street).toEqual("Nova rua updated")
+    expect(updateResponse.body.address.city).toEqual("Manaus")
   });
 });
