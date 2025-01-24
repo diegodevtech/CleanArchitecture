@@ -29,5 +29,21 @@ describe("Customer E2E tests", () => {
       expect(response.body.address.number).toBe(1);
       expect(response.body.address.zip).toBe("33333-222");
       expect(response.body.address.city).toBe("Manaus");
-  })
+  });
+
+  it("should throw error when customer is invalid", async () => {
+    const response = await request(app)
+      .post("/customer")
+      .send({
+        name: "Diego",
+        address: {
+          street: "Rua",
+          number: 1,
+          // zip: "33333-222",
+          city: "Manaus",
+        },
+      });
+
+      expect(response.statusCode).toBe(500);
+  });
 })
